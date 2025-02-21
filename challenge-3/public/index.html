@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Management</h1>
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Product rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <h2>Manage Product</h2>
+    <form id="productForm">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id"><br><br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description"><br><br>
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price"><br><br>
+        <button type="button" onclick="getProducts()">GET</button>
+        <button type="button" onclick="createProduct()">POST</button>
+        <button type="button" onclick="updateProduct()">PUT</button>
+        <button type="button" onclick="deleteProduct()">DELETE</button>
+    </form>
+
+    <script>
+        const apiUrl = 'http://localhost:3000/api/items';
+
+        function getProducts() {
+            const id = document.getElementById('id').value;
+            fetch(`${apiUrl}/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector('#productTable tbody');
+                    tbody.innerHTML = '';
+                    data.forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.description}</td>
+                            <td>${product.price}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                });
+        }
+
+        function createProduct() {
+            const product = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                price: document.getElementById('price').value
+            };
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(product)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Product created successfully');
+                getProducts();
+            });
+        }
+
+        function updateProduct() {
+            const id = document.getElementById('id').value;
+            const product = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                price: document.getElementById('price').value
+            };
+            fetch(`${apiUrl}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(product)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Product updated successfully');
+                getProducts();
+            });
+        }
+
+        function deleteProduct() {
+            const id = document.getElementById('id').value;
+            fetch(`${apiUrl}/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Product deleted successfully');
+                    getProducts();
+                } else {
+                    alert('Error deleting product');
+                }
+            });
+        }
+
+        // Initial load of products
+        getProducts();
+    </script>
+</body>
+</html>
