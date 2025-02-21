@@ -24,9 +24,7 @@ class Program
 
     private static string GetRawUrl(string url)
     {
-        var rawUrl = url.Replace("github.com", "raw.githubusercontent.com");
-        rawUrl = rawUrl.Replace("/blob", string.Empty);
-        return rawUrl;
+        return url.Replace("github.com", "raw.githubusercontent.com").Replace("/blob", string.Empty);
     }
 
     private static async Task<string> FetchContentFromUrl(string url)
@@ -41,12 +39,11 @@ class Program
 
     private static void ExtractSecrets(string content)
     {
-        string[] lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-        Regex regex = new Regex(@"\*(.*)\*");
+        var regex = new Regex(@"\*(.*?)\*", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        foreach (string line in lines)
+        MatchCollection matches = regex.Matches(content);
+        foreach (Match match in matches)
         {
-            Match match = regex.Match(line);
             if (match.Success)
             {
                 Console.WriteLine(match.Groups[1].Value);
