@@ -12,3 +12,5 @@ challenge-4/Highlight-Surface-Pro-AI-11Ed-Sapphire-MC001-3000x1682_VP5-1920x600.
 .vs
 obj
 bin
+node_modules
+package-lock.json
