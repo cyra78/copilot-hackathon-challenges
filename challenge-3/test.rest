@@ -1,0 +1,32 @@
+### Retrieve all items
+GET http://localhost:3000/api/items
+Content-Type: application/json
+
+### Retrieve an item by its ID
+GET http://localhost:3000/api/items/1
+Content-Type: application/json
+
+### Create a new item
+POST http://localhost:3000/api/items
+Content-Type: application/json
+
+{
+    "name": "Product3",
+    "description": "Description3",
+    "price": 30.0
+}
+
+### Update an existing item
+PUT http://localhost:3000/api/items/1
+Content-Type: application/json
+
+{
+    "name": "Updated Product",
+    "description": "Updated Description",
+    "price": 35.0
+}
+
+
+### Delete an item
+DELETE http://localhost:3000/api/items/1
+Content-Type: application/json
