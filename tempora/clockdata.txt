@@ -1,0 +1,6 @@
+The Grand Clock Tower is at 15:00.
+    - Clock times around town:
+        - Clock 1: 14:45
+        - Clock 2: 15:05
+        - Clock 3: 15:00
+        - Clock 4: 14:40
